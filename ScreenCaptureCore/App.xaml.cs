@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Composition.WindowsRuntimeHelpers;
 using System.Windows;
+using Windows.System;
 
 namespace ScreenCaptureCore
 {
@@ -13,5 +9,11 @@ namespace ScreenCaptureCore
     /// </summary>
     public partial class App : Application
     {
+        private DispatcherQueueController controller;
+
+        public App()
+        {
+            controller = CoreMessagingHelper.CreateDispatcherQueueControllerForCurrentThread();
+        }
     }
 }

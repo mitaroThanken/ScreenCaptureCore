@@ -128,7 +128,7 @@ namespace ScreenCaptureCore
 
         public static bool IsWindowValidForCapture(IntPtr hwnd)
         {
-            if (hwnd.ToInt32() == 0)
+            if (hwnd == IntPtr.Zero)
             {
                 return false;
             }
@@ -148,8 +148,15 @@ namespace ScreenCaptureCore
                 return false;
             }
 
-            var style = (WindowStyles)(uint)GetWindowLongPtr(hwnd, (int)GWL.GWL_STYLE).ToInt32();
-            if (style.HasFlag(WindowStyles.WS_DISABLED))
+            WindowStyles styles;
+            if (IntPtr.Size == 8)
+            {
+                styles = (WindowStyles)(uint)GetWindowLongPtr(hwnd, (int)GWL.GWL_STYLE).ToInt64();
+            } else
+            {
+                styles = (WindowStyles)(uint)GetWindowLongPtr(hwnd, (int)GWL.GWL_STYLE).ToInt32();
+            }
+            if (styles.HasFlag(WindowStyles.WS_DISABLED))
             {
                 return false;
             }
